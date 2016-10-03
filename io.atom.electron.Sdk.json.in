@@ -1,0 +1,55 @@
+{
+    "build-runtime": true,
+    "id": "io.atom.electron.Sdk",
+    "id-platform": "io.atom.electron.Platform",
+    "branch": "@@SDK_BRANCH@@",
+    "runtime": "org.freedesktop.Platform",
+    "sdk": "org.freedesktop.Sdk",
+    "runtime-version": "@@SDK_RUNTIME_VERSION@@",
+    "writable-sdk": true,
+    "sdk-extensions": ["org.freedesktop.Sdk.Debug", "org.freedesktop.Sdk.Locale"],
+    "platform-extensions": [ "org.freedesktop.Platform.Locale"],
+    "metadata": "metadata.sdk",
+    "metadata-platform": "metadata.platform",
+    "cleanup": [ "/cache",
+                 "/man",
+                 "/share/man",
+                 "/share/gtk-doc",
+                 "/share/devhelp",
+                 "/lib/systemd",
+                 "*.la", "*.a"],
+    "cleanup-commands": [ "touch -d @0 /usr/share/fonts",
+                          "touch -d @0 /usr/share/fonts/*",
+                          "fc-cache -fs"
+                        ],
+    "cleanup-platform": [ "/include",
+                          "/share/aclocal",
+                          "/share/pkgconfig",
+                          "/lib/pkgconfig",
+                          "/share/gir-1.0",
+                          "/share/vala"
+                        ],
+    "build-options" : {
+        "cflags": "-O2 -g",
+        "cxxflags": "-O2 -g",
+        "env": {
+            "V": "1"
+        }
+    },
+    "modules": [
+        {
+            "name": "os-release",
+            "sources": [
+                {
+                    "type": "file",
+                    "path": "os-release"
+                },
+                {
+                    "type": "file",
+                    "path": "os-release-configure",
+                    "dest-filename": "configure"
+                }
+            ]
+        }
+    ]
+}

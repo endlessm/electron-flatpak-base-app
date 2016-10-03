@@ -1,0 +1,4 @@
+NAME=Electron
+VERSION=@@SDK_BRANCH@@ (Flatpak runtime)
+VERSION_ID=@@SDK_BRANCH@@
+ID=io.atom.electron.Platform
