@@ -215,6 +215,15 @@
                     "path": "libappindicator-disable-python-bindings.patch"
                 }
             ]
+        },
+        {
+            "name": "flatpak-xdg-open-shim",
+            "sources": [
+                {
+                    "type": "git",
+                    "url": "git://github.com/mattdangerw/flatpak-xdg-open-shim"
+                }
+            ]
         }
     ]
 }
