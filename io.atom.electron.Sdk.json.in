@@ -131,17 +131,12 @@
         },
         {
             "name": "libnotify",
-            "rm-configure": true,
             "config-opts": [ "--disable-static", "--disable-tests", "--disable-introspection" ],
             "sources": [
                 {
                     "type": "archive",
-                    "url": "https://download.gnome.org/sources/libnotify/0.7/libnotify-0.7.6.tar.xz",
-                    "sha256": "0ef61ca400d30e28217979bfa0e73a7406b19c32dd76150654ec5b2bdf47d837"
-                },
-                {
-                    "type": "patch",
-                    "path": "libnotify-disable-tests.patch"
+                    "url": "https://download.gnome.org/sources/libnotify/0.7/libnotify-0.7.7.tar.xz",
+                    "sha256": "9cb4ce315b2655860c524d46b56010874214ec27e854086c1a1d0260137efc04"
                 }
             ]
         },
