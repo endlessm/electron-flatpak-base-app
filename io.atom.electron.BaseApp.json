@@ -228,18 +228,6 @@
             ]
         },
         {
-            "name": "node",
-            "no-autogen": true,
-            "cleanup-platform": [ "*" ],
-            "sources": [
-                {
-                    "type": "archive",
-                    "url": "https://nodejs.org/dist/v4.6.0/node-v4.6.0.tar.xz",
-                    "sha256": "42910dbd34e49bfc40580e06753947c30d31101455a38e9f0343a23d67c0c694"
-                }
-            ]
-        },
-        {
             "name": "os-release",
             "sources": [
                 {
