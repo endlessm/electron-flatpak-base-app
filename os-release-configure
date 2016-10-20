@@ -1,9 +1,0 @@
-#!/bin/sh
-
-cat <<EOF > Makefile
-all:
-
-install:
-	mkdir -p ${DESTDIR}/usr/lib
-		install os-release ${DESTDIR}/usr/lib
-EOF
