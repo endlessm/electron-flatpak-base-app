@@ -9,3 +9,9 @@ all: ${REPO}
 
 ${REPO}:
 	ostree  init --mode=archive-z2 --repo=${REPO}
+
+# Convenience to install deps. Require flatpak > 0.6.13.
+# If you already have a gnome remote just install from that!
+install-deps:
+	flatpak --user remote-add --from gnome https://sdk.gnome.org/gnome.flatpakrepo
+	flatpak --user install gnome org.freedesktop.Platform/${ARCH}/1.4 org.freedesktop.Sdk/${ARCH}/1.4
