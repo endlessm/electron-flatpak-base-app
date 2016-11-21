@@ -13,6 +13,12 @@ application binaries and assets to `/app` to produce a functioning flatpak.
 [flatpak-builder](http://flatpak.org/flatpak/flatpak-docs.html#flatpak-builder)
 supports the `base` and `base-version` manifest properties for this purpose.
 
+By distributing the library requirements as a base application and not a runtime
+we can still allow the freedesktop runtime to handle things like critical
+security updates. If multiple electron apps are built against the same
+version of the base app, the libraries will still be deduplicated on disk when
+installed on a user machine.
+
 ## Building
 Building the base app requires flatpak to be installed on your system. It builds
 on top of the freedesktop runtime and requires both org.freedesktop.Platform and
