@@ -207,11 +207,34 @@
             ]
         },
         {
-            "name": "flatpak-xdg-open-shim",
+            "name": "lynx",
+            "no-autogen": true,
+            "sources": [
+                {
+                    "type": "archive",
+                    "url": "http://invisible-mirror.net/archives/lynx/tarballs/lynx2.8.8rel.2.tar.bz2",
+                    "sha256": "6980e75cf0d677fd52c116e2e0dfd3884e360970c88c8356a114338500d5bee7"
+                }
+            ]
+        },
+        {
+            "name": "xmlto",
+            "no-autogen": true,
+            "sources": [
+                {
+                    "type": "archive",
+                    "url": "https://fedorahosted.org/releases/x/m/xmlto/xmlto-0.0.28.tar.gz",
+                    "sha256": "2f986b7c9a0e9ac6728147668e776d405465284e13c74d4146c9cbc51fd8aad3"
+                }
+            ]
+        },
+        {
+            "name": "xdg-utils",
             "sources": [
                 {
                     "type": "git",
-                    "url": "git://github.com/mattdangerw/flatpak-xdg-open-shim"
+                    "branch": "flatpak",
+                    "path": "../xdg-utils"
                 }
             ]
         }
