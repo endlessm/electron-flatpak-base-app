@@ -51,7 +51,7 @@ manifest file.
 {
     "id": "com.website.SomeApp",
     "base": "io.atom.electron.BaseApp",
-    "base-verson": "master",
+    "base-version": "master",
     "runtime": "org.freedesktop.Platform",
     "runtime-version": "1.4",
     "sdk": "org.freedesktop.Sdk",
