@@ -1,7 +1,3 @@
 .flatpak-builder
-sdk
+build
 repo
-io.atom.electron.Sdk.json
-metadata.platform
-metadata.sdk
-os-release
