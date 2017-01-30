@@ -1,61 +1,87 @@
-# electron-flatpak-base-app
-Base application for building electron flatpaks.
+# electron-flatpak-dev-app
+Development application for building electron flatpaks
 
 ## Overview
-This project contains a recipe for building the library dependencies of an
-[electron](http://electron.atom.io/) app for use with [flatpak](http://flatpak.org/).
+This application includes all the dependencies needed for electron app development
+packaged in a flatpak application.
 
-It helps to be familiar with the anatomy of a flatpak to understand this
-project. The base app you can build here is not independently useful, but will
-contain all library dependencies of an electron app inside of `/app` for use
-with the freedesktop runtime. An actual electron app can then add its
-application binaries and assets to `/app` to produce a functioning flatpak.
-[flatpak-builder](http://flatpak.org/flatpak/flatpak-docs.html#flatpak-builder)
-supports the `base` and `base-version` manifest properties for this purpose.
+## Developing on EndlessOS
+This app can be used to allow electron app development on EndlessOS, where nodejs
+and git will not be available on the system by default. We will detail an
+example of doing this with a tool called [electron-forge](https://github.com/electron-userland/electron-forge).
+EndlessOS version 3.1 is required.
 
-By distributing the library requirements as a base application and not a runtime
-we can still allow the freedesktop runtime to handle things like critical
-security updates. If multiple electron apps are built against the same
-version of the base app, the libraries will still be deduplicated on disk when
-installed on a user machine.
-
-## Building
-Building the base app requires flatpak to be installed on your system. It builds
-on top of the freedesktop runtime and requires both org.freedesktop.Platform and
-org.freedesktop.Sdk to be installed.
-
-The freedesktop runtime is available from the GNOME runtime repository. If you
-are working from a completely clean system, you can run `make install-deps` to
-automatically configure the gnome remote for you and install the required
-runtimes. If you already have a gnome remote configured, just install from that.
-
-Once all the dependencies are installed just run `make` to build the base app.
-You can use the following environment variables to configure the build.
- - ARCH: architecture to use when building the base application. You must
-   have the freedesktop runtimes installed for the same architecture.
- - REPO: the location of the flatpak repository to publish the base app to.
-   Defaults to `repo` wherever `make` is run.
- - EXPORT_ARGS: extra arguments to use when exporting the application with
-   `flatpak-builder`, such as `--gpg-sign=KEYID` for gpg signing.
-
-## Using
-Once the application is installed run the following to install.
+### Installing flatpak application dependencies
+First download the electron base app and dev app from the endless electron
+repository.
 ```shell
-flatpak --user remote-add --no-gpg-verify local-electron repo
-flatpak --user install local-electron io.atom.electron.BaseApp
+flatpak install gnome org.freedesktop.Platform//1.4
+flatpak --user remote-add endless-electron-apps --from https://s3-us-west-2.amazonaws.com/electron-flatpak.endlessm.com/endless-electron-apps.flatpakrepo
+flatpak --user install endless-electron-apps io.atom.electron.BaseApp io.atom.electron.DevApp
 ```
-The base app on its own will not do anything, but it can be used as a starting
-point for an actual electron app. You can specify it in a `flatpak-builder`
-manifest file.
-```json
-{
-    "id": "com.website.SomeApp",
-    "base": "io.atom.electron.BaseApp",
-    "base-version": "master",
-    "runtime": "org.freedesktop.Platform",
-    "runtime-version": "1.4",
-    "sdk": "org.freedesktop.Sdk",
-    ...
+
+Now you can run the dev app in a terminal to pull up a bash shell with nodejs
+available.
+```shell
+flatpak run io.atom.electron.DevApp
 ```
-Your installed version of flatpak must be greater than 0.6.13 to use the base
-app property.
+With this command you are now running inside a flatpak sandbox with development
+tools available. You can test this by running `node --version`, future commands
+in this document will be run from inside the dev application bash shell.
+
+### Installing electron-forge
+Next we will install the electron-forge tool globally for development. There
+are many ways to configure npm to install packages globally, but we suggest
+setting up a directory in your home dir, as [described by npm here](https://docs.npmjs.com/getting-started/fixing-npm-permissions#option-2-change-npms-default-directory-to-another-directory).
+
+Once npm is configured, you can get started using electron forge
+```shell
+npm install -g electron-forge
+electron-forge init my-new-app
+cd my-new-app
+electron-forge start
+```
+You should see your new electron application window pop up!
+
+### Setting up you app for flatpak distribution
+Finally, we need to set up your new app for flatpak distribution. In your new
+app directory, open up your `package.json` file. In the "make-targets" section, replace
+```
+"linux": [
+  "deb",
+  "rpm"
+]
+```
+with
+```
+"linux": [
+  "flatpak"
+]
+```
+
+That's it! You can now run
+```shell
+electron-forge make
+```
+To build your application as a flatpak. You should find your app in the
+`out/make` for your new app, e.g. `out/make/io.atom.electron.my-new-app_master_x86_64.flatpak`
+
+### Get developing!
+As you develop, you can just run
+```shell
+electron forge start
+```
+to quickly test changes to your app.
+
+If you want to test your built flatpak, open a new terminal outside of the dev
+app sandbox, and run
+```shell
+flatpak --user install --bundle out/make/io.atom.electron.my-new-app_master_x86_64.flatpak
+flatpak run io.atom.electron.my-new-app
+```
+
+See the [electron-forge documentation](https://github.com/electron-userland/electron-forge)
+for details on how to publish your app directly to github.
+
+See the [electron-forge templates](https://beta.electronforge.io/templates) to
+get started using react, angular, jade and other common web frameworks.
