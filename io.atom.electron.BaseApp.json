@@ -31,7 +31,7 @@
             "sources": [
                 {
                     "type": "archive",
-                    "url": "http://ftp.kernel.org/pub/linux/utils/kernel/hotplug/udev-175.tar.xz",
+                    "url": "https://www.kernel.org/pub/linux/utils/kernel/hotplug/udev-175.tar.xz",
                     "sha256": "6e7c7330a8f7a1d118e33338941381faa005759921caa241535d6930bb12140f"
                 }
             ]
