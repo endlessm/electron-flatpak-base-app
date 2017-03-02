@@ -1,4 +1,6 @@
 .flatpak-builder
 /io.atom.electron.DevApp/
 /io.atom.electron.BaseApp/
+/com.endlessm.ElectronKnowledgeBaseApp/
+/com.endlessm.ElectronKnowledgeDevApp/
 repo

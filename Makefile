@@ -3,20 +3,29 @@ ARCH ?= $(shell flatpak --default-arch)
 REPO ?= repo
 REPO_NAME ?= local-endless-electron-apps
 
-FLATPAKS = io.atom.electron.DevApp io.atom.electron.BaseApp
+FLATPAKS = \
+	io.atom.electron.BaseApp \
+	io.atom.electron.DevApp \
+	com.endlessm.ElectronKnowledgeBaseApp \
+	com.endlessm.ElectronKnowledgeDevApp \
+	$(NULL)
+
+all: $(FLATPAKS)
+
+.PHONY: $(FLATPAKS)
 
 $(FLATPAKS): %: %.json ${REPO}
 	flatpak-builder --force-clean --ccache --require-changes --repo=${REPO} --arch=${ARCH} \
 		--subject="build of $@, `date`" \
 		${EXPORT_ARGS} $@ $< && \
-	flatpak install --user ${REPO_NAME} $@ || true && \
+	flatpak install --user ${REPO_NAME} $@/${ARCH}/ || true && \
 	flatpak --user update $@/${ARCH}/
-
-.PHONY: $(FLATPAKS)
 
 io.atom.electron.DevApp: io.atom.electron.BaseApp
 
-all: io.atom.electron.DevApp
+com.endlessm.ElectronKnowledgeBaseApp: io.atom.electron.BaseApp
+
+com.endlessm.ElectronKnowledgeDevApp: io.atom.electron.DevApp
 
 ${REPO}:
 	ostree init --mode=archive-z2 --repo=${REPO} && \

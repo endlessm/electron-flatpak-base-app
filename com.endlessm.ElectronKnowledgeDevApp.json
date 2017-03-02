@@ -1,6 +1,6 @@
 {
-    "id": "io.atom.electron.DevApp",
-    "base": "io.atom.electron.BaseApp",
+    "id": "com.endlessm.ElectronKnowledgeDevApp",
+    "base": "io.atom.electron.DevApp",
     "base-version": "master",
     "runtime": "org.freedesktop.Sdk",
     "runtime-version": "1.4",
@@ -48,96 +48,71 @@
         /* Chromium uses a socket in tmp for its singleton check */
         "--filesystem=/tmp",
         /* flatpak-bundler builds things in var tmp, needs to support xattrs */
-        "--filesystem=/var/tmp"
+        "--filesystem=/var/tmp",
+        /* Access subscriptions apps */
+        "--filesystem=~/.local/share"
     ],
     "cleanup": [ "/cache",
                  "/share/aclocal",
-                 "/lib/systemd",
+                 "/share/vala",
                  "*.la", "*.a" ],
     "build-options" : {
         "cflags": "-O2 -g",
         "cxxflags": "-O2 -g",
         "env": {
-            "MOUNT_FUSE_PATH": "../tmp/",
             "V": "1"
         }
     },
     "modules": [
         {
-            "name": "libfuse",
-            "cleanup": [ "/bin" ],
+            "name": "libsoup",
+            "config-opts": ["--disable-static", "--disable-vala"],
             "sources": [
                 {
                     "type": "archive",
-                    "url": "https://github.com/libfuse/libfuse/releases/download/fuse_2_9_5/fuse-2.9.5.tar.gz",
-                    "sha256": "579f371cc5ffc1afca7057512bf7d52988a9ede57859a7c55e5b9f72435cdbb5"
+                    "url": "https://download.gnome.org/sources/libsoup/2.56/libsoup-2.56.0.tar.xz",
+                    "sha256": "d8216b71de8247bc6f274ec054c08547b2e04369c1f8add713e9350c8ef81fe5"
                 }
             ]
         },
         {
-            "name": "libgsystem",
+            "name": "xapian-core",
+            "sources": [
+                {
+                    "type": "archive",
+                    "url": "https://oligarchy.co.uk/xapian/1.3.7/xapian-core-1.3.7.tar.xz",
+                    "sha256": "cfbbd8d42512690bc9867ed88a6a80723fe4193b6c4b97597f8fdf49026b94e7"
+                }
+            ]
+        },
+        {
+            "name": "xapian-glib",
             "sources": [
                 {
                     "type": "git",
-                    "url": "git://git.gnome.org/libgsystem.git"
+                    "url": "git://github.com/endlessm/xapian-glib",
+                    "branch": "master"
                 }
             ]
         },
         {
-            "name": "ostree",
-            "config-opts": [ "--disable-man" ],
-            "cleanup": [ "/bin",
-                         "/etc/grub.d",
-                         "/etc/ostree",
-                         "/share/ostree",
-                         "/libexec" ],
+            "name": "eos-shard",
             "sources": [
                 {
-                    "type": "archive",
-                    "url": "https://github.com/ostreedev/ostree/releases/download/v2016.15/ostree-2016.15.tar.xz",
-                    "sha256": "430178680bd0842dcfab66b780324f9e3cfa460799eec53166fa069e3396ecbd"
+                    "type": "git",
+                    "url": "git://github.com/endlessm/eos-shard",
+                    "branch": "master"
                 }
             ]
         },
         {
-            "name": "flatpak",
-            "config-opts": [ "--disable-documentation",
-                             "--disable-seccomp",
-                             "--disable-sandboxed-triggers",
-                             "--disable-system-helper",
-                             "--with-system-install-dir=/var/lib/flatpak" ],
-            "cleanup": [ "/etc/profile.d",
-                         "/lib/systemd",
-                         "/share/dbus-1/interfaces/org.freedesktop.*",
-                         "/share/dbus-1/services/org.freedesktop.*",
-                         "/share/gdm" ],
-            "post-install": [ "cp /usr/bin/update-mime-database /app/bin",
-                              "cp /usr/bin/update-desktop-database /app/bin" ],
+            "name": "ekncontent",
+            "subdir": "ekncontent",
             "sources": [
                 {
-                    "type": "archive",
-                    "url": "https://github.com/flatpak/flatpak/releases/download/0.8.0/flatpak-0.8.0.tar.xz",
-                    "sha256": "5b082065c9921308305845f99b0facbc9b85a93e3d7553fd238824190294aacd"
-                }
-            ]
-        },
-        {
-            "name": "git",
-            "sources": [
-                {
-                    "type": "archive",
-                    "url": "https://www.kernel.org/pub/software/scm/git/git-2.11.0.tar.xz",
-                    "sha256": "7e7e8d69d494892373b87007674be5820a4bc1ef596a0117d03ea3169119fd0b"
-                }
-            ]
-        },
-        {
-            "name": "nodejs",
-            "sources": [
-                {
-                    "type": "archive",
-                    "url": "https://nodejs.org/dist/v6.9.4/node-v6.9.4.tar.xz",
-                    "sha256": "c51d7c61db40455d57428abcadc7eb0f0a08a8878cb1d8ea3c1e211c54532c35"
+                    "type": "git",
+                    "url": "git://github.com/endlessm/eos-knowledge-lib",
+                    "branch": "master"
                 }
             ]
         }
