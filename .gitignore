@@ -1,3 +1,4 @@
 .flatpak-builder
-build
+/io.atom.electron.DevApp/
+/io.atom.electron.BaseApp/
 repo
