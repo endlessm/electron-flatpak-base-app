@@ -40,6 +40,8 @@
         "--filesystem=/etc/ssl:ro",
         "--filesystem=/etc/pki:ro",
         "--filesystem=/etc/ca-certificates:ro",
+        /* Not sure why this needed */
+        "--env=PKG_CONFIG_PATH=/app/lib/pkgconfig",
         /* Keep system terminal mappings */
         "--filesystem=/etc/inputrc:ro",
         /* Need access to user and system flatpak repos */
