@@ -1,0 +1,122 @@
+{
+    "id": "com.endlessm.ElectronKnowledgeDevApp",
+    "base": "io.atom.electron.DevApp",
+    "base-version": "master",
+    "runtime": "org.freedesktop.Sdk",
+    "runtime-version": "1.4",
+    "sdk": "org.freedesktop.Sdk",
+    "command": "/usr/bin/bash",
+    "finish-args": [
+        /* Allow access to developer tools */
+        "--allow=devel",
+        "--talk-name=org.freedesktop.Flatpak",
+        /* X11 + XShm access */
+        "--share=ipc", "--socket=x11",
+        /* OpenGL */
+        "--device=dri",
+        /* Wayland access */
+        "--socket=wayland",
+        /* Audio output */
+        "--socket=pulseaudio",
+        /* We want full fs access */
+        "--filesystem=host",
+        /* Allow communication with network */
+        "--share=network",
+        "--talk-name=org.gtk.vfs.*",
+        /* System notifications with libnotify */
+        "--talk-name=org.freedesktop.Notifications",
+        /* Needs access to policykit for flatpak */
+        "--system-talk-name=org.freedesktop.PolicyKit1",
+        /* Needed for dconf to work (+ host or homedir read access from above) */
+        "--filesystem=xdg-run/dconf",
+        "--filesystem=~/.config/dconf:ro",
+        "--talk-name=ca.desrt.dconf",
+        "--env=DCONF_USER_CONFIG_DIR=.config/dconf",
+        /* We need access to auth agents */
+        "--talk-name=org.freedesktop.secrets",
+        "--filesystem=xdg-run/keyring",
+        /* Needed for various SSL certificates to work */
+        "--env=SSL_CERT_DIR=/etc/ssl/certs",
+        "--filesystem=/etc/ssl:ro",
+        "--filesystem=/etc/pki:ro",
+        "--filesystem=/etc/ca-certificates:ro",
+        /* Not sure why this needed */
+        "--env=PKG_CONFIG_PATH=/app/lib/pkgconfig",
+        /* Keep system terminal mappings */
+        "--filesystem=/etc/inputrc:ro",
+        /* Need access to user and system flatpak repos */
+        "--filesystem=~/.local/share/flatpak",
+        "--filesystem=/var/lib/flatpak",
+        /* Chromium uses a socket in tmp for its singleton check */
+        "--filesystem=/tmp",
+        /* flatpak-bundler builds things in var tmp, needs to support xattrs */
+        "--filesystem=/var/tmp",
+        /* Access subscriptions apps */
+        "--filesystem=~/.local/share"
+    ],
+    "cleanup": [ "/cache",
+                 "/share/aclocal",
+                 "/share/vala",
+                 "*.la", "*.a" ],
+    "build-options" : {
+        "cflags": "-O2 -g",
+        "cxxflags": "-O2 -g",
+        "env": {
+            "V": "1"
+        }
+    },
+    "modules": [
+        {
+            "name": "libsoup",
+            "config-opts": ["--disable-static", "--disable-vala"],
+            "sources": [
+                {
+                    "type": "archive",
+                    "url": "https://download.gnome.org/sources/libsoup/2.56/libsoup-2.56.0.tar.xz",
+                    "sha256": "d8216b71de8247bc6f274ec054c08547b2e04369c1f8add713e9350c8ef81fe5"
+                }
+            ]
+        },
+        {
+            "name": "xapian-core",
+            "sources": [
+                {
+                    "type": "archive",
+                    "url": "https://oligarchy.co.uk/xapian/1.3.7/xapian-core-1.3.7.tar.xz",
+                    "sha256": "cfbbd8d42512690bc9867ed88a6a80723fe4193b6c4b97597f8fdf49026b94e7"
+                }
+            ]
+        },
+        {
+            "name": "xapian-glib",
+            "sources": [
+                {
+                    "type": "git",
+                    "url": "git://github.com/endlessm/xapian-glib",
+                    "branch": "master"
+                }
+            ]
+        },
+        {
+            "name": "eos-shard",
+            "sources": [
+                {
+                    "type": "git",
+                    "url": "git://github.com/endlessm/eos-shard",
+                    "branch": "master"
+                }
+            ]
+        },
+        {
+            "name": "ekncontent",
+            "subdir": "ekncontent",
+            "sources": [
+                {
+                    "type": "git",
+                    "url": "git://github.com/endlessm/eos-knowledge-lib",
+                    "branch": "master"
+                }
+            ]
+        }
+    ]
+}

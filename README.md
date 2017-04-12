@@ -1,61 +1,72 @@
 # electron-flatpak-base-app
-Base application for building electron flatpaks.
+This repo contains flatpak builder manifests for building a number of
+applications to help with electron flatpak development.
 
-## Overview
-This project contains a recipe for building the library dependencies of an
-[electron](http://electron.atom.io/) app for use with [flatpak](http://flatpak.org/).
+Built versions for x86_64, i386 and arm are currently hosted on s3 at
+https://s3-us-west-2.amazonaws.com/electron-flatpak.endlessm.com/repo.
 
-It helps to be familiar with the anatomy of a flatpak to understand this
-project. The base app you can build here is not independently useful, but will
-contain all library dependencies of an electron app inside of `/app` for use
-with the freedesktop runtime. An actual electron app can then add its
-application binaries and assets to `/app` to produce a functioning flatpak.
-[flatpak-builder](http://flatpak.org/flatpak/flatpak-docs.html#flatpak-builder)
-supports the `base` and `base-version` manifest properties for this purpose.
+To get started with the electron base app for your current architecture.
+```
+flatpak remote-add endless-electron-apps --from https://s3-us-west-2.amazonaws.com/electron-flatpak.endlessm.com/endless-electron-apps.flatpakrepo
+flatpak install endless-electron-apps io.atom.electron.BaseApp
+```
 
-By distributing the library requirements as a base application and not a runtime
-we can still allow the freedesktop runtime to handle things like critical
-security updates. If multiple electron apps are built against the same
-version of the base app, the libraries will still be deduplicated on disk when
-installed on a user machine.
+## Apps
+The most useful app here will probably be the `io.atom.electron.BaseApp`
+which can be layered into your flatpak electron app with all the library
+dependencies electron needs to run. For a high level overview of flatpak,
+electron and the applications here see.
+
+#### General Apps
+ - **io.atom.electron.BaseApp**: contains all the library dependencies of an
+   electron application, allowing your app to target the freedesktop runtime.
+   Should be suitable for targeting *any* linux distribution.
+ - **io.atom.electron.DevApp**: layered on top of the base app, this application
+   contains flatpak, git and nodejs installed. You can use it to build electron
+   flatpaks on a system where either git or nodejs is not available.
+
+#### EndlessOS Apps
+ - **com.endless.ElectronKnowledgeBaseApp**: layered on top of the base app,
+   contains the library dependencies needed to build offline content browsing
+   apps for EndlessOS.
+ - **com.endless.ElectronKnowledgeDevApp**: adds flatpak, git and nodejs to
+   the ElectronKnowledgeBaseApp. You can build EndlessOS content browsing
+   flatpaks from within this app.
 
 ## Building
-Building the base app requires flatpak to be installed on your system. It builds
-on top of the freedesktop runtime and requires both org.freedesktop.Platform and
-org.freedesktop.Sdk to be installed.
+Building the apps require `flatpak` and `flatpak-builder` to be installed on
+your system. You will also need the freedesktop runtime, which if you don't
+already have, can be installed by running
+```
+make install-deps
+```
 
-The freedesktop runtime is available from the GNOME runtime repository. If you
-are working from a completely clean system, you can run `make install-deps` to
-automatically configure the gnome remote for you and install the required
-runtimes. If you already have a gnome remote configured, just install from that.
+Any of the app manifests can be built directly using the `flatpak-builder`
+command. The makefile contains a recipe for building all the apps in this
+repo sequentially, to do so just run
+```
+make
+```
 
-Once all the dependencies are installed just run `make` to build the base app.
 You can use the following environment variables to configure the build.
  - ARCH: architecture to use when building the base application. You must
    have the freedesktop runtimes installed for the same architecture.
  - REPO: the location of the flatpak repository to publish the base app to.
    Defaults to `repo` wherever `make` is run.
+ - REPO_NAME: the name to use when setting up a local flatpak remote for the
+   repo. Default to `local-endless-electron-apps`.
  - EXPORT_ARGS: extra arguments to use when exporting the application with
    `flatpak-builder`, such as `--gpg-sign=KEYID` for gpg signing.
 
 ## Using
-Once the application is installed run the following to install.
-```shell
-flatpak --user remote-add --no-gpg-verify local-electron repo
-flatpak --user install local-electron io.atom.electron.BaseApp
-```
-The base app on its own will not do anything, but it can be used as a starting
-point for an actual electron app. You can specify it in a `flatpak-builder`
-manifest file.
+To can use the base app to build an electron application flatpak, one way to do
+this is to specify it in a `flatpak-builder` manifest file.
 ```json
 {
-    "id": "com.website.SomeApp",
+    "id": "com.website.MyElectronApp",
     "base": "io.atom.electron.BaseApp",
     "base-version": "master",
     "runtime": "org.freedesktop.Platform",
     "runtime-version": "1.4",
     "sdk": "org.freedesktop.Sdk",
-    ...
 ```
-Your installed version of flatpak must be greater than 0.6.13 to use the base
-app property.
