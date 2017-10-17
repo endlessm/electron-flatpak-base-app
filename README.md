@@ -59,7 +59,7 @@ You can use the following environment variables to configure the build.
    `flatpak-builder`, such as `--gpg-sign=KEYID` for gpg signing.
 
 ## Using
-To can use the base app to build an electron application flatpak, one way to do
+You can use the base app to build an electron application flatpak. One way to do
 this is to specify it in a `flatpak-builder` manifest file.
 ```json
 {
