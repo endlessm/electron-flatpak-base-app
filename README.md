@@ -2,13 +2,12 @@
 This repo contains flatpak builder manifests for building a number of
 applications to help with electron flatpak development.
 
-Built versions for x86_64, i386 and arm are currently hosted on s3 at
-https://s3-us-west-2.amazonaws.com/electron-flatpak.endlessm.com/repo.
+Built versions for x86_64, i386 and arm are hosted on [Flathub](https://flathub.org).
 
 To get started with the electron base app for your current architecture.
 ```
-flatpak remote-add endless-electron-apps --from https://s3-us-west-2.amazonaws.com/electron-flatpak.endlessm.com/endless-electron-apps.flatpakrepo
-flatpak install endless-electron-apps io.atom.electron.BaseApp
+flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
+flatpak install flathub io.atom.electron.BaseApp
 ```
 
 ## Apps
