@@ -3,7 +3,7 @@
     "base": "io.atom.electron.BaseApp",
     "base-version": "master",
     "runtime": "org.freedesktop.Sdk",
-    "runtime-version": "1.4",
+    "runtime-version": "1.6",
     "sdk": "org.freedesktop.Sdk",
     "command": "/usr/bin/bash",
     "finish-args": [

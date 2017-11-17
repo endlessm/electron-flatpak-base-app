@@ -33,11 +33,11 @@ ${REPO}:
 
 # Convenience to install dependencies
 install-deps:
-	if ! flatpak info --show-commit org.freedesktop.Platform/${ARCH}/1.4; then \
+	if ! flatpak info --show-commit org.freedesktop.Platform/${ARCH}/1.6; then \
 		flatpak --user remote-add --if-not-exists --from gnome https://sdk.gnome.org/gnome.flatpakrepo && \
-		flatpak --user install gnome org.freedesktop.Platform/${ARCH}/1.4; \
+		flatpak --user install gnome org.freedesktop.Platform/${ARCH}/1.6; \
 	fi && \
-	if ! flatpak info --show-commit org.freedesktop.Sdk/${ARCH}/1.4; then \
+	if ! flatpak info --show-commit org.freedesktop.Sdk/${ARCH}/1.6; then \
 		flatpak --user remote-add --if-not-exists --from gnome https://sdk.gnome.org/gnome.flatpakrepo && \
-		flatpak --user install gnome org.freedesktop.Sdk/${ARCH}/1.4; \
+		flatpak --user install gnome org.freedesktop.Sdk/${ARCH}/1.6; \
 	fi

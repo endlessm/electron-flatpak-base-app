@@ -66,6 +66,6 @@ this is to specify it in a `flatpak-builder` manifest file.
     "base": "io.atom.electron.BaseApp",
     "base-version": "master",
     "runtime": "org.freedesktop.Platform",
-    "runtime-version": "1.4",
+    "runtime-version": "1.6",
     "sdk": "org.freedesktop.Sdk",
 ```
