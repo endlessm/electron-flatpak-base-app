@@ -1,3 +1,5 @@
+**Obsolete**, superseded by https://github.com/flathub/org.electronjs.Electron2.BaseApp and https://github.com/flathub/io.atom.electron.BaseApp.
+
 # electron-flatpak-base-app
 This repo contains flatpak builder manifests for building a number of
 applications to help with electron flatpak development.
